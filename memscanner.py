@@ -3,20 +3,33 @@ from collections import defaultdict
 
 
 def count_consecutive_spaces(string):
-    string = string.split("  ")
-    j = 0
+    string = string.split(" ")
+    j = 1
     for i in range(len(string)):
-        
         if string[i] == "":
-            if string[i+1] == "":
-                j+=1
+            try:
+                if string[i+1] == "":
+                    j+=1
+            except:
+                pass
     return j+1
+
+
+def get_segment(string):
+    string = string.split(" " * count_consecutive_spaces(string))
+    for i in range(len(string)):
+        if string[i] == "":
+            string.pop(i)
+
+    return string
+
+
 
 class Map:
     def __init__(self, mapping_str, pid):
         self.pid = pid
         
-        segments = mapping_str.split("  " * count_consecutive_spaces(mapping_str))
+        segments = get_segment(mapping_str)
         address, perms, offset, dev, inode = segments[0].split()
         if len(segments) == 2:
             pathname = segments[1].strip()
