@@ -2,17 +2,27 @@ import sys
 from collections import defaultdict
 
 
+def count_consecutive_spaces(string):
+    string = string.split("  ")
+    j = 0
+    for i in range(len(string)):
+        
+        if string[i] == "":
+            if string[i+1] == "":
+                j+=1
+    return j+1
+
 class Map:
     def __init__(self, mapping_str, pid):
         self.pid = pid
-
-        segments = mapping_str.split()
-        if len(segments) == 6:
-            address, perms, offset, dev, inode, pathname = segments
-        elif len(segments) == 5:
-            address, perms, offset, dev, inode = segments
+        
+        segments = mapping_str.split("  " * count_consecutive_spaces(mapping_str))
+        address, perms, offset, dev, inode = segments[0].split()
+        if len(segments) == 2:
+            pathname = segments[1].strip()
+        
+        else:
             pathname = None
-
         address_start, address_end = address.split("-")
         self.address_start = int(address_start, 16)
         self.address_end = int(address_end, 16)
